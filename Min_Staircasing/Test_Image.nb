@@ -1,0 +1,236 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      7843,        228]
+NotebookOptionsPosition[      7225,        209]
+NotebookOutlinePosition[      7665,        226]
+CellTagsIndexPosition[      7622,        223]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Resample1D", "[", 
+    RowBox[{"a_", ",", "K_"}], "]"}], ":=", 
+   RowBox[{"ListConvolve", "[", 
+    RowBox[{"K", ",", 
+     RowBox[{"Riffle", "[", 
+      RowBox[{
+       RowBox[{"Table", "[", 
+        RowBox[{"0", ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"1", "/", "dx"}], "-", "1"}], ")"}], 
+           RowBox[{"(", " ", 
+            RowBox[{
+             RowBox[{"Length", "[", "a", "]"}], "+", "1"}], ")"}]}], "}"}]}], 
+        "]"}], ",", "a", ",", 
+       RowBox[{"1", "/", "dx"}]}], "]"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Resample2D", "[", 
+    RowBox[{"a_", ",", "K_"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ParallelMap", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Resample1D", "[", 
+        RowBox[{"#", ",", "K"}], "]"}], "&"}], ",", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Resample1D", "[", 
+            RowBox[{"#", ",", "K"}], "]"}], "&"}], "/@", "a"}], ")"}], 
+        "\[Transpose]"}], ")"}]}], "]"}], "\[Transpose]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Crop", "[", 
+    RowBox[{"a_", ",", "S_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"L", ",", "dx"}], "}"}], ",", "\n", "\t", 
+     RowBox[{
+      RowBox[{"L", "=", 
+       RowBox[{"Length", "[", "a", "]"}]}], ";", "\n", "\t", 
+      RowBox[{"dx", "=", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"L", "-", "S"}], ")"}], "/", "2"}]}], ";", "\n", "\t", 
+      RowBox[{"a", "[", 
+       RowBox[{"[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"1", "+", "dx"}], ";;", 
+          RowBox[{"L", "-", "dx"}]}], ",", 
+         RowBox[{
+          RowBox[{"1", "+", "dx"}], ";;", 
+          RowBox[{"L", "-", "dx"}]}]}], "]"}], "]"}]}]}], "\n", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"pad", "=", "3"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"n", "=", "30"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"dx", "=", 
+   RowBox[{"1", "/", "12"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Fa", "[", 
+    RowBox[{"x_", ",", "y_"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"1", "+", 
+      RowBox[{"Cos", "[", 
+       RowBox[{
+        FractionBox["n", "5"], " ", "2", "\[Pi]", 
+        RowBox[{"(", 
+         RowBox[{
+          SuperscriptBox["x", "2"], "+", 
+          SuperscriptBox["y", "2"]}], ")"}]}], "]"}]}], ")"}], "/", "2"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"a", "=", 
+   RowBox[{"N", "[", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"Fa", "[", 
+       RowBox[{
+        RowBox[{"i", "/", "n"}], ",", 
+        RowBox[{"j", "/", "n"}]}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"j", ",", 
+        RowBox[{"0", "-", "pad"}], ",", 
+        RowBox[{"n", "+", "pad"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", 
+        RowBox[{"0", "-", "pad"}], ",", 
+        RowBox[{"n", "+", "pad"}]}], "}"}]}], "]"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ATrue", "=", 
+   RowBox[{"N", "[", 
+    RowBox[{"ParallelTable", "[", 
+     RowBox[{
+      RowBox[{"Fa", "[", 
+       RowBox[{
+        RowBox[{"i", "/", "n"}], ",", 
+        RowBox[{"j", "/", "n"}]}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"j", ",", "0", ",", " ", "n", ",", "dx"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "0", ",", "n", ",", "dx"}], "}"}]}], "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Ker", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"KLanc3", "[", "x", "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"-", "pad"}], ",", "pad", ",", "dx"}], "}"}]}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"AX", "=", 
+   RowBox[{"Crop", "[", 
+    RowBox[{
+     RowBox[{"Resample2D", "[", 
+      RowBox[{"a", ",", "Ker"}], "]"}], ",", 
+     RowBox[{"Length", "[", "ATrue", "]"}]}], "]"}]}], ";"}], "\n", 
+ RowBox[{"RootMeanSquare", "[", 
+  RowBox[{"Flatten", "[", 
+   RowBox[{"AX", "-", "ATrue"}], "]"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.831287656872376*^9, 3.831287706542059*^9}},
+ CellLabel->"In[80]:=",ExpressionUUID->"a55816c3-aced-4fc8-bcc8-b628e63931f5"],
+
+Cell[BoxData["0.03578161783523744`"], "Output",
+ CellChangeTimes->{3.831287739934797*^9},
+ CellLabel->"Out[91]=",ExpressionUUID->"0ff63ab4-f9ca-4ae1-b243-becb03e78446"]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"Ker", ",", 
+   RowBox[{"PlotRange", "\[Rule]", "Full"}], ",", 
+   RowBox[{"Filling", "\[Rule]", "Axis"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ArrayPlot", "[", 
+  RowBox[{"a", ",", 
+   RowBox[{"ColorFunction", "\[Rule]", "GrayLevel"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ArrayPlot", "[", 
+  RowBox[{"ATrue", ",", 
+   RowBox[{"ColorFunction", "\[Rule]", "GrayLevel"}], ",", 
+   RowBox[{"PixelConstrained", "\[Rule]", "1"}], ",", 
+   RowBox[{"Frame", "\[Rule]", "False"}]}], "]"}], "\n", 
+ RowBox[{"ArrayPlot", "[", 
+  RowBox[{"AX", ",", 
+   RowBox[{"ColorFunction", "\[Rule]", "GrayLevel"}], ",", 
+   RowBox[{"PixelConstrained", "\[Rule]", "1"}], ",", 
+   RowBox[{"Frame", "\[Rule]", "False"}]}], "]"}], "\n", 
+ RowBox[{"ArrayPlot", "[", 
+  RowBox[{
+   RowBox[{"Abs", "[", 
+    RowBox[{"AX", "-", "ATrue"}], "]"}], ",", 
+   RowBox[{"ColorFunction", "\[Rule]", "GrayLevel"}], ",", 
+   RowBox[{"PixelConstrained", "\[Rule]", "1"}], ",", 
+   RowBox[{"Frame", "\[Rule]", "False"}]}], "]"}]}], "Input",
+ CellChangeTimes->{
+  3.545825155715281*^9, {3.8224686797548356`*^9, 3.822468680371871*^9}, {
+   3.8224696160203867`*^9, 3.822469630508216*^9}, {3.8311842307145605`*^9, 
+   3.8311842373373437`*^9}, {3.83118479086769*^9, 3.831184792202856*^9}, {
+   3.831184884243266*^9, 3.831184945201934*^9}, {3.831185006403302*^9, 
+   3.831185009157304*^9}, 3.8311850988202353`*^9, {3.831185251596183*^9, 
+   3.831185274254938*^9}, {3.8311853399145594`*^9, 3.8311853409337187`*^9}, {
+   3.831186447228509*^9, 3.8311865896631193`*^9}, {3.8311866477409935`*^9, 
+   3.831186648914297*^9}, {3.8311866795274844`*^9, 3.831186681519209*^9}, {
+   3.831286059161584*^9, 3.8312860724165106`*^9}, {3.8312861261510725`*^9, 
+   3.8312863059648623`*^9}, {3.8312863760276546`*^9, 3.831286416632704*^9}, {
+   3.831286449639421*^9, 3.831286718951778*^9}, {3.831286839202481*^9, 
+   3.8312868428280334`*^9}, {3.8312872148976507`*^9, 3.831287255463276*^9}, {
+   3.831287412091169*^9, 3.831287435413597*^9}, {3.831287677764355*^9, 
+   3.8312877702329445`*^9}},
+ CellLabel->"In[97]:=",ExpressionUUID->"70a2e1d1-9771-46a4-b6df-b523b02bc84c"]
+},
+WindowSize->{1777, 1138},
+WindowMargins->{{6, Automatic}, {Automatic, 88}},
+Magnification:>FEPrivate`If[
+  FEPrivate`Equal[FEPrivate`$VersionNumber, 6.], 2., 2. Inherited],
+FrontEndVersion->"11.3 for Microsoft Windows (64-bit) (March 6, 2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 4285, 137, 718, "Input",ExpressionUUID->"a55816c3-aced-4fc8-bcc8-b628e63931f5"],
+Cell[4867, 161, 168, 2, 90, "Output",ExpressionUUID->"0ff63ab4-f9ca-4ae1-b243-becb03e78446"]
+}, Open  ]],
+Cell[5050, 166, 2171, 41, 214, "Input",ExpressionUUID->"70a2e1d1-9771-46a4-b6df-b523b02bc84c"]
+}
+]
+*)
+

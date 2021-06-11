@@ -2,7 +2,7 @@
 A collection of original interpolation kernels for image resampling.
 
 ## Min_Staircasing
-Kernels minimizing staircasing or blocking artifacts.
+Kernels minimizing staircasing or blocking artifacts [(paper on arXiv)](https://arxiv.org/abs/2106.04104).
 
 File | Description
 -----|------------
